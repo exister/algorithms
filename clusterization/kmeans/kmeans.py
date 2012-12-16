@@ -1,4 +1,12 @@
 # -*- coding: utf-8 -*-
+
+"""
+from console run like this:
+ipython --pylab=qt
+from main import *
+ColorClustering(path='/path/to/picture.jpg')(3, 200, 0.5)
+"""
+
 from random import sample
 import Image
 import math
@@ -10,7 +18,7 @@ from matplotlib.patches import  Rectangle
 class Point(object):
     def __init__(self, *args):
         if len(args) != self.dimensions:
-            raise TypeError()
+            raise TypeError('Wrong dimensions')
         self.coordinates = args
 
     @property
@@ -19,9 +27,9 @@ class Point(object):
 
     def distance(self, point):
         if not isinstance(point, self.__class__):
-            raise TypeError()
+            raise TypeError('Wrong point class')
         if point.dimensions != self.dimensions:
-            raise TypeError()
+            raise TypeError('Wrong dimensions')
         return self._distance(point)
 
     def _distance(self, point):
@@ -51,7 +59,7 @@ class ColorPoint(Point):
 class Cluster(object):
     def __init__(self, points):
         if not points:
-            raise ValueError()
+            raise ValueError('No points')
         self.point_class = type(points[0])
         self.dimensions = points[0].dimensions
         self.points = points
@@ -129,6 +137,8 @@ class ColorClustering(Clustering):
             if self.image.size[0] > 200 or self.image.size[1] > 200:
                 self.image.thumbnail((200, 200))
             self.pixels = [self._point_class(*p) for c, p in self.image.getcolors(self.image.size[0] * self.image.size[1])]
+        else:
+            raise IOError('No such file')
 
     @property
     def _points(self):
