@@ -110,10 +110,7 @@ class Clustering(object):
             cluster_index = None
             for ci, c in enumerate(self.clusters):
                 distance = p.distance(c.mean)
-                if min_distance is None:
-                    min_distance = distance
-                    cluster_index = ci
-                elif distance < min_distance:
+                if min_distance is None or distance < min_distance:
                     min_distance = distance
                     cluster_index = ci
             tmp_clusters[cluster_index].append(p)
